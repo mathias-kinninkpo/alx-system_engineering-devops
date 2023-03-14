@@ -1,0 +1,2 @@
+#!/bin/bash
+grep -e "^[Aa]" /etc/ssh/sshd_config
