@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# manages "manage_my_process"
+file=/var/run/my_process.pid
+proc=manage_my_process
+if [ "$1" = "start" ]; then
+	./"$proc" & 
+	echo "$!" > "$file"
+	echo "$proc" started
+elif [ "$1" = "stop" ]; then
+	pkill -SIGKILL -f ./"$proc"
+       	rm "$file"
+	echo "$proc" stopped
+elif [ "$1" = "restart" ]; then
+	pkill -SIGKILL -f ./"$proc"
+       	rm "$file"
+	./"$proc" &
+	echo "$!" > "$file"
+	echo "$proc" restarted
+else
+	echo "Usage: manage_my_process {start|stop|restart}"
+fi

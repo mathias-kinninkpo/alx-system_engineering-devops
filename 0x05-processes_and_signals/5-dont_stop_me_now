@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#Bash that stop bashh script that displays To infinity and beyond indefinitely. 
+
+kill "$(pgrep -f 4-to_infinity_and_beyond)"
