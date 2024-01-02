@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
-# this script displays only the following fields from /etc/passwd
-# username, groupid, shell full path
+# Path to the passwd file
+passwd_file="/etc/passwd"
 
-while read line; do
-    echo "$line" | cut -d':' -f 1,3,6
-done < /etc/passwd
+# Check if the file exists before proceeding
+if [ -e "$passwd_file" ]; then
+    # Read the file line by line using a while loop
+    while IFS=: read -r username _ uid _ _ home _; do
+        echo "$username:$uid:$home"
+    done < "$passwd_file"
+else
+    echo "The file $passwd_file does not exist."
+fi
