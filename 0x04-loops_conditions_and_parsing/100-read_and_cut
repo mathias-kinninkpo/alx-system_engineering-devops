@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# this script displays only the following fields from /etc/passwd
+# username, groupid, shell full path
+
+while read line; do
+    echo "$line" | cut -d':' -f 1,3,6
+done < /etc/passwd
