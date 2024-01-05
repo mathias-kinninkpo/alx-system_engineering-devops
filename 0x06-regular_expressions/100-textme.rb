@@ -1,2 +1,4 @@
 #!/usr/bin/env ruby
-puts ARGV[0].scan(/\[from:(.*?)\] \[to:(.*?)\] \[flags:(.*?)\]/).join(',')
+str = ARGV[0].scan(/\[([^\]([TFSu])]*)\]/).join(", ")
+str.split(/\w+:(.*), to:(.*), flags:(.*)/)
+puts str
