@@ -1,0 +1,4 @@
+Host 107.23.95.21
+	IdentityFile ~/.ssh/school
+	StrictHostKeyChecking yes
+	PasswordAuthentication no
