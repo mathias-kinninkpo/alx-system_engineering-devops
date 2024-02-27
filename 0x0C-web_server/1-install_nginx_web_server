@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# A script that installs nginx web server with firewall and displays 'Hello World!'
+
+sudo apt-get update
+sudo apt-get install -y nginx
+sudo ufw allow 'Nginx HTTP'
+echo "Hello World!" > /var/www/html/index.html
+sudo service nginx start
