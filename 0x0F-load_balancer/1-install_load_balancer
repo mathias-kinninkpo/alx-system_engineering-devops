@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# A script that configures HAproxy on lb-01 server.
+sudo apt-get -y update
+sudo apt-get install -y --no-install-recommends software-properties-common
+sudo add-apt-repository -y ppa:vbernat/haproxy-2.8
+sudo apt-get -y update
+sudo apt-get -y install haproxy
+
+sudo cp -a /etc/haproxy/haproxy.cfg{,.orig}
+sudo chmod 666 /etc/haproxy/haproxy.cfg
+
+# Configure HAproxy
+server_config=\
+"
+global
+        log 127.0.0.1 local0
+        log 127.0.0.1 local1 notice
+
+defaults
+        log global
+        mode http
+        option httplog
+        option dontlognull
+        timeout connect 5000ms
+        timeout client 50000ms
+        timeout server 50000ms
+        stats uri /status
+
+frontend  ggbaguidi-frontend
+        bind *:80
+        mode http
+        default_backend ggbaguidi-backend
+
+backend ggbaguidi-backend
+  	balance roundrobin
+  	server 389728-web-01 52.3.255.199:80 check
+  	server 389728-web-02 54.144.154.232:80 check
+"
+echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+
+# enable haproxy to be started by init script
+
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+service haproxy restart
+
