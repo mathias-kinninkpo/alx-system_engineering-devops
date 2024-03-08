@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Usage: ./1-world_wide_web <domain> <subdomain>
+# Display information about subdomains.
+
+show_subdomain() {
+    line=$(dig "$1" | awk 'c&&!--c;/ANSWER SECTION:/{c=1}')
+    read -r SUB_DOMAIN RECORD_TYPE DESTINATION <<< "$(echo "$line" | awk '{print $1, $4, $5}')"
+    SUB_DOMAIN=$(echo "$SUB_DOMAIN" | awk 'BEGIN {FS="."} {print $1} END{}')
+    echo "The subdomain $SUB_DOMAIN is a $RECORD_TYPE record and points to $DESTINATION"
+}
+
+show_all() {
+    subs=("www.$1" "lb-01.$1" "web-01.$1" "web-02.$1")
+    for sub in "${subs[@]}"; do
+        show_subdomain "$sub"
+    done
+}
+
+if [ -n "$2" ]; then
+    show_subdomain "$2.$1"
+else
+    show_all "$1"
+fi
+
